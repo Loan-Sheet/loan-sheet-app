@@ -1,0 +1,22 @@
+steps:
+  - name: 'gcr.io/cloud-builders/mvn'
+    id: 'Build-and-Test'
+    args: ['clean', 'package', '-DskipTests=true']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'Deploy-to-App-Engine'
+    args:
+      - 'app'
+      - 'deploy'
+      - 'src/main/appengine/app.yaml'
+      - '--promote'
+      - '--quiet'
+      - '--stop-previous-version'
+      - '--version=${_SERVICE_NAME}-${SHORT_SHA}'
+      - '--project=${PROJECT_ID}'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _SERVICE_NAME: loan-sheet-app

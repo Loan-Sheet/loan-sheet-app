@@ -1,0 +1,6 @@
+runtime: java21
+instance_class: F1
+service: loan-sheet-app
+automatic_scaling:
+  min_instances: 0
+  max_instances: 3
