@@ -1,5 +1,6 @@
 # Cloud Build Configuration for the loan-sheet-app service
-# Version: 2.1 - Optimized for Speed and Best Practices
+# Version: 2.2 - Patched for JDK 21 Compatibility
+
 steps:
   # STEP 1: Restore Maven cache from Google Cloud Storage to speed up the build.
   # This step is non-critical; if the cache doesn't exist, it will fail gracefully.
@@ -13,7 +14,7 @@ steps:
 
   # STEP 2: Build the Spring Boot application using Maven.
   # It uses the restored cache to avoid re-downloading dependencies.
-  - name: 'gcr.io/cloud-builders/mvn'
+  - name: 'maven:3.9.8-eclipse-temurin-21'
     id: 'Build-Application'
     env:
       - 'MAVEN_OPTS=-Dmaven.repo.local=/root/.m2/repository'
