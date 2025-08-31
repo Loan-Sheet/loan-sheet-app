@@ -49,7 +49,7 @@ steps:
 
 # Substitutions for dynamic variables.
 substitutions:
-  _SERVICE_NAME: loan-sheet-app
+  _SERVICE_NAME: default
 
 # Options for the build process.
 options:
