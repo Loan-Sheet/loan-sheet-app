@@ -19,7 +19,9 @@ steps:
     entrypoint: 'bash'
     env:
       - 'MAVEN_OPTS=-Dmaven.repo.local=/root/.m2/repository'
-    args: ['package', '-DskipTests=true', '-B', '-q']
+    args:
+      - '-c'
+      - 'mvn package -DskipTests=true -B -q'
     waitFor:
       - 'Restore-Cache'
 
