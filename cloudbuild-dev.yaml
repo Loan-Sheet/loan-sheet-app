@@ -1,42 +1,23 @@
 # Cloud Build Configuration for the loan-sheet-app service
-# Version: 2.2 - Patched for JDK 21 Compatibility
+# Version: 2.3 - Simplified without cache for reliability
 
 steps:
-  # STEP 1: Restore Maven cache from Google Cloud Storage to speed up the build.
-  # This step is non-critical; if the cache doesn't exist, it will fail gracefully.
-  - name: 'gcr.io/cloud-builders/gsutil'
-    id: 'Restore-Cache'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - 'gsutil -m rsync -r gs://${PROJECT_ID}_cloudbuild/maven-cache/ /root/.m2 || true'
-    waitFor: ['-'] # Start immediately
-
-  # STEP 2: Build the Spring Boot application using Maven.
-  # It uses the restored cache to avoid re-downloading dependencies.
+  # STEP 1: Build the Spring Boot application using Maven with Java 21.
   - name: 'maven:3.9.8-eclipse-temurin-21'
     id: 'Build-Application'
     entrypoint: 'bash'
-    env:
-      - 'MAVEN_OPTS=-Dmaven.repo.local=/root/.m2/repository'
     args:
       - '-c'
-      - 'mvn package -DskipTests=true -B -q'
-    waitFor:
-      - 'Restore-Cache'
+      - |
+        echo "=== Java Version ===" && \
+        java -version && \
+        echo "=== Maven Version ===" && \
+        mvn -version && \
+        echo "=== Building Application ===" && \
+        mvn clean package -DskipTests=true -B
+    waitFor: ['-']
 
-  # STEP 3: Save the new Maven cache for future builds.
-  - name: 'gcr.io/cloud-builders/gsutil'
-    id: 'Save-Cache'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - 'gsutil -m rsync -r /root/.m2 gs://${PROJECT_ID}_cloudbuild/maven-cache/'
-    waitFor:
-      - 'Build-Application'
-
-  # STEP 4: Prepare the deployment artifacts in a clean staging directory.
-  # Using 'alpine' for a lightweight and fast execution for file operations.
+  # STEP 2: Prepare the deployment artifacts in a clean staging directory.
   - name: 'alpine'
     id: 'Prepare-Deployment-Directory'
     entrypoint: 'sh'
@@ -51,8 +32,7 @@ steps:
     waitFor:
       - 'Build-Application'
 
-  # STEP 5: Deploy the application to App Engine.
-  # It points to the staging directory which contains both the app.yaml and the JAR.
+  # STEP 3: Deploy the application to App Engine.
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'Deploy-to-App-Engine'
     args:
