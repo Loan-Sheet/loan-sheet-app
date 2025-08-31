@@ -16,6 +16,7 @@ steps:
   # It uses the restored cache to avoid re-downloading dependencies.
   - name: 'maven:3.9.8-eclipse-temurin-21'
     id: 'Build-Application'
+    entrypoint: 'bash'
     env:
       - 'MAVEN_OPTS=-Dmaven.repo.local=/root/.m2/repository'
     args: ['package', '-DskipTests=true', '-B', '-q']
