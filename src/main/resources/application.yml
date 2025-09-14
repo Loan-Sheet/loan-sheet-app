@@ -1,0 +1,4 @@
+#Configuration common to all environments
+spring:
+  application:
+    name: loan-sheet-app

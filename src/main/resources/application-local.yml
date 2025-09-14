@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    gcp:
+      project-id: loan-sheet-local
+      firestore:
+        emulator:
+          enabled: true
+        host-port: localhost:8081
+        project-id: loan-sheet-local

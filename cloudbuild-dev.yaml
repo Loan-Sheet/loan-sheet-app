@@ -44,6 +44,8 @@ steps:
       - '--stop-previous-version'
       - '--version=${_SERVICE_NAME}-${SHORT_SHA}'
       - '--project=${PROJECT_ID}'
+    env:
+      - 'SPRING_PROFILES_ACTIVE=staging'
     waitFor:
       - 'Prepare-Deployment-Directory'
 

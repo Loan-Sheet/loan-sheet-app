@@ -1,0 +1,4 @@
+spring:
+  cloud:
+    gcp:
+      project-id: horizontal-cab-469915-g7
