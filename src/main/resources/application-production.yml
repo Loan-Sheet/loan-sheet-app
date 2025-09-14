@@ -1,0 +1,4 @@
+spring:
+  cloud:
+    gcp:
+      project-id: your-gcp-production-project-id
