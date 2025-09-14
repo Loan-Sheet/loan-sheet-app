@@ -14,7 +14,7 @@ steps:
         echo "=== Maven Version ===" && \
         mvn -version && \
         echo "=== Building Application ===" && \
-        mvn clean package -DskipTests=true -B -Dspring.profiles.active=staging
+        mvn clean package -Dspring.profiles.active=staging -DskipTests=true -B
     waitFor: ['-']
 
   # STEP 2: Prepare the deployment artifacts in a clean staging directory.
@@ -44,8 +44,6 @@ steps:
       - '--stop-previous-version'
       - '--version=${_SERVICE_NAME}-${SHORT_SHA}'
       - '--project=${PROJECT_ID}'
-    env:
-      - 'SPRING_PROFILES_ACTIVE=staging'
     waitFor:
       - 'Prepare-Deployment-Directory'
 
