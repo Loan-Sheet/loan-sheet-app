@@ -14,7 +14,7 @@ steps:
         echo "=== Maven Version ===" && \
         mvn -version && \
         echo "=== Building Application ===" && \
-        mvn clean package -DskipTests=true -B
+        mvn clean package -DskipTests=true -B -Dspring.profiles.active=staging
     waitFor: ['-']
 
   # STEP 2: Prepare the deployment artifacts in a clean staging directory.
