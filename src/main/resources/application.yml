@@ -1,4 +1,6 @@
 #Configuration common to all environments
 spring:
+  profiles:
+    active: local
   application:
     name: loan-sheet-app
